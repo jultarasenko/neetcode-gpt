@@ -16,5 +16,5 @@ class Solution:
         # y_true: one-hot encoded true labels (shape: n_samples x n_classes)
         # y_pred: predicted probabilities (shape: n_samples x n_classes)
         y_pred = Solution.clip(y_pred)
-        L = -1 / len(y_true) * np.sum(y_true * np.log(y_pred))
+        L = -np.mean(np.sum(y_true * np.log(y_pred), axis=1))
         return round (L, 4)
