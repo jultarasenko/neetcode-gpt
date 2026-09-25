@@ -18,15 +18,22 @@ class Solution:
         #   'dW2':   2D list (gradient w.r.t. W2, rounded to 4 decimals)
         #   'db2':   1D list (gradient w.r.t. b2, rounded to 4 decimals)
 
-        #forward
+        # forward
         z1 = np.dot(x, np.transpose(W1)) + b1
         a1 = np.maximum(0.0, z1) 
         z2 = np.dot(a1, np.transpose(W2)) + b2
         L = np.mean(np.square(z2 - y_true))
 
-        #backward
+        # backward
+        # dz2 = 2 * (z2 - y_true) (1)
+        # dz2 = 2 * (a1 * W2 + b2 - y_true) (2)
+        # (1), (2) => db2 = 2 * (z2 - y_true)
         db2 = 2 * (z2 - y_true) # n = 1
+        # (1), (2) => dW2 = 2 * (z2 - y_true) * a1 = db2 * a1
         dW2 = np.outer(db2, a1)
+        # (1), (2) => da1 = 2 * (z2 - y_true) * W2 = db2 * W2
+        # a1 = ReLU(z1) = ReLU(x * W1 + b1) (3)
+        # (3) => db1 = ReLU(da1), dW1 = ReLU(da1) * x = db1 * x
         db1 = np.dot(db2, W2) * (z1 > 0)
         dW1 = np.outer(db1, x)
 
