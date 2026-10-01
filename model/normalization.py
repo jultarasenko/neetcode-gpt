@@ -12,7 +12,7 @@ class Solution:
         # Scale and shift: out = gamma * x_hat + beta
         # return np.round(your_answer, 5)
         eps = 1e-5
-        mean = x - np.mean(x)
-        var = np.sqrt(np.mean(mean ** 2) + eps)
-        x_hat = mean / var * gamma + beta
+        x_centred = x - np.mean(x)
+        var = np.sqrt(np.mean(x_centred ** 2) + eps) #np.std(x)
+        x_hat = x_centred / var * gamma + beta
         return np.round(x_hat, 5)
