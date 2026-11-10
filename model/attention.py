@@ -1,6 +1,5 @@
 import torch
 import torch.nn as nn
-import numpy as np
 from torchtyping import TensorType
 
 class SingleHeadAttention(nn.Module):
@@ -24,7 +23,7 @@ class SingleHeadAttention(nn.Module):
         K = self.key(embedded)
         Q = self.query(embedded) 
         V = self.value(embedded)
-        score = Q @ K.transpose(1, 2) / np.sqrt(attention_dim)
+        score = Q @ K.transpose(1, 2) / attention_dim ** 0.5
         mask = torch.tril(torch.ones(score.size()))
         masked_score = score.masked_fill(mask == 0, float('-inf'))
         attention = nn.functional.softmax(masked_score, dim=2) @ V
