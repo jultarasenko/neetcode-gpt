@@ -24,8 +24,8 @@ class SingleHeadAttention(nn.Module):
         K = self.key(embedded)
         Q = self.query(embedded) 
         V = self.value(embedded)
-        score = Q @ K.transpose(-2, -1) / np.sqrt(attention_dim)
+        score = Q @ K.transpose(1, 2) / np.sqrt(attention_dim)
         mask = torch.tril(torch.ones(score.size()))
         masked_score = score.masked_fill(mask == 0, float('-inf'))
-        attention = nn.functional.softmax(masked_score, dim=-1) @ V
+        attention = nn.functional.softmax(masked_score, dim=2) @ V
         return torch.round(attention, decimals=4)
